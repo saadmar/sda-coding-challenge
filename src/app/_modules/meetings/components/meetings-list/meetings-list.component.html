@@ -1,0 +1,96 @@
+<mat-table matSort class="mat-elevation-z8" [dataSource]="dataSource">
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>Person</mat-header-cell>
+    <mat-cell mat-cell *matCellDef="let meeting"
+      >{{ meeting.person.firstname | titlecase }}
+      {{ meeting.person.lastname | titlecase }}</mat-cell
+    >
+  </ng-container>
+
+  <ng-container matColumnDef="phoneNumber">
+    <mat-header-cell *matHeaderCellDef>Phone Number</mat-header-cell>
+    <mat-cell mat-cell *matCellDef="let meeting">{{
+      meeting.person.phoneNumber
+    }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <mat-header-cell *matHeaderCellDef mat-sort-header
+      >Contact Date</mat-header-cell
+    >
+    <mat-cell mat-cell *matCellDef="let meeting">{{
+      meeting.date | date: "dd/MM/yyyy"
+    }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="address">
+    <mat-header-cell mat-header-cell *matHeaderCellDef
+      >Contact Address</mat-header-cell
+    >
+    <mat-cell mat-cell *matCellDef="let meeting">{{
+      meeting.address
+    }}</mat-cell>
+  </ng-container>
+  <!-- Grouped by date -->
+  <ng-container matColumnDef="dateGroup">
+    <mat-header-cell mat-header-cell *matHeaderCellDef
+      >Contact Date</mat-header-cell
+    >
+    <mat-cell mat-cell *matCellDef="let meeting">{{
+      meeting.date | date: "dd/MM/yyyy"
+    }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="count">
+    <mat-header-cell *matHeaderCellDef> Number of persons </mat-header-cell>
+    <mat-cell *matCellDef="let meeting">
+      {{ meeting.meetings.length }}
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="meetings">
+    <mat-header-cell mat-header-cell *matHeaderCellDef
+      >Contact info</mat-header-cell
+    >
+    <mat-cell mat-cell *matCellDef="let meeting"
+      ><app-meetings-list
+        [meetingsList]="meeting.meetings"
+        [hideHeader]="true"
+        [columnDef]="['name', 'phoneNumber']"
+      ></app-meetings-list
+    ></mat-cell>
+  </ng-container>
+
+  <!-- Grouped by person -->
+
+  <ng-container matColumnDef="person">
+    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+    <mat-cell *matCellDef="let meeting">
+      {{ meeting.person.firstname | titlecase }}
+      {{ meeting.person.lastname | titlecase }}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="countDates">
+    <mat-header-cell *matHeaderCellDef> Number of meetings</mat-header-cell>
+    <mat-cell *matCellDef="let meeting">
+      {{ meeting.meetings.length }}
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="meetingsByPerson">
+    <mat-header-cell mat-header-cell *matHeaderCellDef
+      >Contact info</mat-header-cell
+    >
+    <mat-cell mat-cell *matCellDef="let meeting"
+      ><app-meetings-list
+        [meetingsList]="meeting.meetings"
+        [hideHeader]="true"
+        [columnDef]="['date', 'address']"
+      ></app-meetings-list
+    ></mat-cell>
+  </ng-container>
+
+  <mat-header-row
+    [ngClass]="{ hideHeader: hideHeader }"
+    *matHeaderRowDef="columnDef"
+  ></mat-header-row>
+  <mat-row *matRowDef="let row; columns: columnDef"></mat-row>
+</mat-table>

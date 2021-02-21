@@ -1,0 +1,62 @@
+<div class="page">
+  <form [formGroup]="meetingForm">
+    <ng-container formGroupName="person">
+      <div class="input-row">
+        <mat-form-field>
+          <mat-label>First Name</mat-label>
+          <input
+            matInput
+            formControlName="firstname"
+            #username
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option
+              *ngFor="let option of personSuggestions$ | async"
+              [value]="option.firstname"
+              (onSelectionChange)="fillOtherFields(option)"
+            >
+              {{ option.firstname | titlecase }} {{ option.lastname }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastname" />
+        </mat-form-field>
+      </div>
+      <div class="input-row">
+        <mat-form-field>
+          <mat-label>Telephone</mat-label>
+          <span matPrefix>+49 &nbsp;</span>
+          <input
+            type="tel"
+            matInput
+            placeholder="555-555-1234"
+            formControlName="phoneNumber"
+          />
+        </mat-form-field>
+      </div>
+    </ng-container>
+
+    <div class="input-row">
+      <mat-form-field>
+        <mat-label>Address</mat-label>
+        <button mat-icon-button matSuffix (click)="locateMe()">
+          <mat-icon>my_location</mat-icon>
+        </button>
+        <input matInput formControlName="address" />
+      </mat-form-field>
+    </div>
+
+    <div class="input-row">
+      <mat-form-field>
+        <mat-label>Meeting Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </form>
+  <button mat-raised-button color="primary" (click)="save()">Add Person</button>
+</div>
